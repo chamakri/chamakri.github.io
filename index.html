@@ -348,7 +348,7 @@
 
                 <!--Integarting Number API using React Framework-->
                 <aside class="number facts aside section">
-                    <div class="section-inner shadow-sm rounded">
+                <div class="section-inner shadow-sm rounded">
                     <div id="number"></div>
                     <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
                     <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
@@ -358,24 +358,40 @@
                   
                     <!-- Numbers Fact Component -->
                     <script type="text/babel">
-                        const { useState, useEffect } = React;
-                        const NumberTrivia = () => {
-                        const [fact, setFact] = useState('');
-                        useEffect(() => {
-                            fetch('http://numbersapi.com/random')
-                            .then(response => response.text())
-                            .then(data => setFact(data))
-                            .catch(error => console.error('Error fetching trivia:', error));
-                        }, []);
+                    const { useState, useEffect } = React;
+                    const NumberTrivia = () => {
+                    const [fact, setFact] = useState('');
 
-                        return (
+                    useEffect(() => {
+                        const options = {
+                        method: 'GET',
+                        url: 'https://numbersapi.p.rapidapi.com/1729/math',
+                        params: {
+                            fragment: 'true',
+                            json: 'true'
+                        },
+                        headers: {
+                            'X-RapidAPI-Key': '2e029309ebmshe6a17b1a5cbe336p1abb59jsna4ef00962f3b',
+                            'X-RapidAPI-Host': 'numbersapi.p.rapidapi.com'
+                        }
+                    };
+                    const url = `${options.url}?${new URLSearchParams(options.params).toString()}`;
+
+                    fetch(url, {
+                    method: options.method,
+                    headers: options.headers
+                    }).then(response => response.json())
+                    .then(data => setFact(data.text))
+                    .catch(error => console.error('Error fetching trivia:', error));
+                    }, []);
+
+                    return (
                         <div>
-                        <h2 class="heading"><i class="fas fa-hashtag"></i>Number Trivia</h2>
-                        <p>{fact}</p>
+                            <h2 class="heading"><i class="fas fa-hashtag"></i>Number Trivia</h2>
+                            <p>{fact}</p>
                         </div>
-                        );
-                        };
-
+                    );
+                    };
                     ReactDOM.render(<NumberTrivia />, document.getElementById('number'));
                     </script>
                 </div>
